@@ -769,20 +769,45 @@ function renderMatches(){
   let html='';
   const GNAMES={A:'Groupe A',B:'Groupe B',C:'Groupe C',D:'Groupe D',E:'Groupe E',F:'Groupe F',G:'Groupe G',H:'Groupe H',I:'🇫🇷 Groupe I — France',J:'Groupe J',K:'Groupe K',L:'Groupe L'};
 
-  // Groupes de phase de poule
+  // Un seul accordéon pour toute la phase de groupes
+  // Calcul dates globales
+  const allGroupDates=GROUP_MATCHES.map(m=>m.d);
+  const firstGroupDate=allGroupDates[0];
+  const lastGroupDate=allGroupDates[allGroupDates.length-1];
+
+  // Joueurs avec au moins un prono manquant dans toute la phase de groupes
+  const incompleteGlobal=PLAYERS.filter(pn=>{
+    return GROUP_MATCHES.some(m=>{
+      const s=scores[m.id]||{};
+      const hasRealScore=s.h!==undefined&&s.h!==''&&!isNaN(parseInt(s.h))&&s.a!==undefined&&s.a!==''&&!isNaN(parseInt(s.a));
+      if(hasRealScore) return false;
+      const pp=(pronos[m.id]||{})[pn]||{};
+      return pp.h===undefined||pp.h===''||pp.a===undefined||pp.a==='';
+    });
+  });
+  const incompleteGlobalHTML=incompleteGlobal.length>0
+    ?` <span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px;margin-left:4px">⚠️ ${incompleteGlobal.join(', ')}</span>`
+    :'';
+
+  html+=`<div class="group-header" onclick="toggleGroup('groupes')">
+    <span>⚽ Phase de groupes <span style="font-weight:400;opacity:.75;font-size:10px;margin-left:6px">${firstGroupDate} → ${lastGroupDate}</span>${incompleteGlobalHTML}</span>
+    <span id="ga-groupes" class="group-arrow">▼</span>
+  </div>
+  <div class="group-body" id="gb-groupes">
+    <div class="group-body-inner">`;
+
   for(const grp of 'ABCDEFGHIJKL'.split('')){
     const matchesOfGroup=GROUP_MATCHES.filter(m=>m.g===grp);
     const dates=matchesOfGroup.map(m=>m.d);
     const firstDate=dates[0];
     const lastDate=dates[dates.length-1];
     const dateRange=firstDate===lastDate?firstDate:`${firstDate} → ${lastDate}`;
-    const isI=false;
-    // Joueurs n'ayant pas rempli leurs pronostics pour les matchs à venir (pas encore de score réel)
+
+    // Joueurs en retard pour ce groupe spécifique
     const incomplete=PLAYERS.filter(pn=>{
       return matchesOfGroup.some(m=>{
         const s=scores[m.id]||{};
         const hasRealScore=s.h!==undefined&&s.h!==''&&!isNaN(parseInt(s.h))&&s.a!==undefined&&s.a!==''&&!isNaN(parseInt(s.a));
-        // On ne signale que les matchs PAS encore joués (pas de score réel)
         if(hasRealScore) return false;
         const pp=(pronos[m.id]||{})[pn]||{};
         return pp.h===undefined||pp.h===''||pp.a===undefined||pp.a==='';
@@ -791,30 +816,29 @@ function renderMatches(){
     const incompleteHTML=incomplete.length>0
       ?` <span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px;margin-left:4px">⚠️ ${incomplete.join(', ')}</span>`
       :'';
-    html+=`<div class="group-header" onclick="toggleGroup('${grp}')">
+
+    // Sous-titre groupe (non accordéon, juste visuel)
+    html+=`<div style="background:linear-gradient(90deg,#1a3a5c,#0d6e3b);color:#fff;padding:6px 12px;border-radius:7px;margin:10px 0 5px;font-size:12px;font-weight:700;display:flex;justify-content:space-between;align-items:center">
       <span>${GNAMES[grp]} <span style="font-weight:400;opacity:.75;font-size:10px;margin-left:6px">${dateRange}</span>${incompleteHTML}</span>
-      <span id="ga-${grp}" class="group-arrow${isI?' open':''}">▼</span>
-    </div>
-    <div class="group-body${isI?' open':''}" id="gb-${grp}">
-      <div class="group-body-inner">`;
+    </div>`;
     for(const m of matchesOfGroup){
       html+=matchHTML(m.id,m.d,m.h,m.a);
     }
-    html+=`</div></div>`;
   }
+  html+=`</div></div>`;
 
-  // Phases éliminatoires
+  // Phases éliminatoires — accordéons séparés
   const PHASES=[
-    {label:'16es de finale',key:'r16',ids:ELIM.filter(m=>m.type==='r16').map(m=>m.id)},
-    {label:'8es de finale',key:'q',ids:['q01','q02','q03','q04','q05','q06','q07','q08']},
-    {label:'Quarts de finale',key:'qf',ids:['qf1','qf2','qf3','qf4']},
-    {label:'Demi-finales',key:'sf',ids:['sf1','sf2']},
-    {label:'Petite finale 🥉',key:'p3',ids:['p3']},
-    {label:'🏆 Finale',key:'fin',ids:['fin']},
+    {label:'16es de finale',key:'r16',ids:ELIM.filter(m=>m.type==='r16').map(m=>m.id),dates:'28 juin → 4 juil.'},
+    {label:'8es de finale',key:'q',ids:['q01','q02','q03','q04','q05','q06','q07','q08'],dates:'5 → 8 juil.'},
+    {label:'Quarts de finale',key:'qf',ids:['qf1','qf2','qf3','qf4'],dates:'11 → 12 juil.'},
+    {label:'Demi-finales',key:'sf',ids:['sf1','sf2'],dates:'15 → 16 juil.'},
+    {label:'Petite finale 🥉',key:'p3',ids:['p3'],dates:'18 juil.'},
+    {label:'🏆 Finale',key:'fin',ids:['fin'],dates:'19 juil.'},
   ];
   for(const ph of PHASES){
     html+=`<div class="group-header" onclick="toggleGroup('${ph.key}')">
-      <span>${ph.label} <span class="elim-tag">Élim. directe</span></span>
+      <span>${ph.label} <span style="font-weight:400;opacity:.75;font-size:10px;margin-left:6px">${ph.dates}</span></span>
       <span id="ga-${ph.key}" class="group-arrow">▼</span>
     </div>
     <div class="group-body" id="gb-${ph.key}">
@@ -829,6 +853,7 @@ function renderMatches(){
   }
   el.innerHTML=html;
 }
+
 
 window.upScore=function(id,side,v){
   if(currentPlayer!==ADMIN) return;
