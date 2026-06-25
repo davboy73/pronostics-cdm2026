@@ -330,24 +330,26 @@ function getBest3rds(){
 }
 
 function getR16Pairs(){
+  // Appariements officiels FIFA CdM 2026
+  // Source : tableau officiel FIFA
   const t=getBest3rds();
   return [
-    [getFinisher('A',1),getFinisher('B',1)],
-    [getFinisher('B',0),getFinisher('A',0)],
-    [getFinisher('C',0),t[0]],
-    [getFinisher('D',0),getFinisher('C',1)],
-    [getFinisher('E',0),t[1]],
-    [getFinisher('E',1),getFinisher('F',1)],
-    [getFinisher('F',0),t[2]],
-    [getFinisher('G',0),t[3]],
-    [getFinisher('H',0),getFinisher('G',1)],
-    [getFinisher('I',0),getFinisher('J',1)],
-    [getFinisher('J',0),getFinisher('I',1)],
-    [getFinisher('K',1),t[4]],
-    [getFinisher('K',0),getFinisher('L',1)],
-    [getFinisher('L',0),getFinisher('K',1)],
-    [getFinisher('D',1),t[5]],
-    [getFinisher('H',1),t[6]],
+    [getFinisher('A',1), getFinisher('B',1)],   // r01: 28 juin - 2e A vs 2e B
+    [getFinisher('C',0), getFinisher('F',1)],   // r02: 29 juin - 1er C vs 2e F
+    [getFinisher('E',0), t[0]],                 // r03: 30 juin - 1er E vs 3e repêché
+    [getFinisher('F',0), getFinisher('C',1)],   // r04: 30 juin - 1er F vs 2e C
+    [getFinisher('E',1), getFinisher('I',1)],   // r05: 30 juin - 2e E vs 2e I
+    [getFinisher('I',0), t[1]],                 // r06: 30 juin - 1er I vs 3e repêché
+    [getFinisher('A',0), t[2]],                 // r07: 1er juil - 1er A vs 3e repêché
+    [getFinisher('L',0), t[3]],                 // r08: 1er juil - 1er L vs 3e repêché
+    [getFinisher('G',0), t[4]],                 // r09: 1er juil - 1er G vs 3e repêché
+    [getFinisher('D',0), t[5]],                 // r10: 2 juil  - 1er D vs 3e repêché
+    [getFinisher('H',0), getFinisher('J',1)],   // r11: 2 juil  - 1er H vs 2e J
+    [getFinisher('K',1), getFinisher('L',1)],   // r12: 3 juil  - 2e K vs 2e L
+    [getFinisher('B',0), t[6]],                 // r13: 3 juil  - 1er B vs 3e repêché
+    [getFinisher('D',1), getFinisher('G',1)],   // r14: 3 juil  - 2e D vs 2e G
+    [getFinisher('J',0), getFinisher('H',1)],   // r15: 4 juil  - 1er J vs 2e H
+    [getFinisher('K',0), t[7]],                 // r16: 4 juil  - 1er K vs 3e repêché
   ];
 }
 
