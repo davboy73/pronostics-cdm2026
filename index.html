@@ -817,13 +817,17 @@ function renderMatches(){
       ?` <span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px;margin-left:4px">⚠️ ${incomplete.join(', ')}</span>`
       :'';
 
-    // Sous-titre groupe (non accordéon, juste visuel)
-    html+=`<div style="background:linear-gradient(90deg,#1a3a5c,#0d6e3b);color:#fff;padding:6px 12px;border-radius:7px;margin:10px 0 5px;font-size:12px;font-weight:700;display:flex;justify-content:space-between;align-items:center">
+    // Accordéon par groupe
+    html+=`<div class="group-header" onclick="toggleGroup('${grp}')" style="margin-top:8px;border-radius:7px">
       <span>${GNAMES[grp]} <span style="font-weight:400;opacity:.75;font-size:10px;margin-left:6px">${dateRange}</span>${incompleteHTML}</span>
-    </div>`;
+      <span id="ga-${grp}" class="group-arrow">▼</span>
+    </div>
+    <div class="group-body" id="gb-${grp}">
+      <div class="group-body-inner">`;
     for(const m of matchesOfGroup){
       html+=matchHTML(m.id,m.d,m.h,m.a);
     }
+    html+=`</div></div>`;
   }
   html+=`</div></div>`;
 
