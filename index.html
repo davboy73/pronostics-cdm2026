@@ -352,19 +352,35 @@ function getR16Pairs(){
 }
 
 const ELIM=[
-  ...[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map(i=>({id:`r${String(i+1).padStart(2,'0')}`,d:'1-4 juil.',type:'r16',idx:i})),
-  {id:'q01',d:'5-8 juil.',type:'win',src:['r01','r02']},
-  {id:'q02',d:'5-8 juil.',type:'win',src:['r03','r04']},
-  {id:'q03',d:'5-8 juil.',type:'win',src:['r05','r06']},
-  {id:'q04',d:'5-8 juil.',type:'win',src:['r07','r08']},
-  {id:'q05',d:'5-8 juil.',type:'win',src:['r09','r10']},
-  {id:'q06',d:'5-8 juil.',type:'win',src:['r11','r12']},
-  {id:'q07',d:'5-8 juil.',type:'win',src:['r13','r14']},
-  {id:'q08',d:'5-8 juil.',type:'win',src:['r15','r16']},
-  {id:'qf1',d:'10-13 juil.',type:'win',src:['q01','q02']},
-  {id:'qf2',d:'10-13 juil.',type:'win',src:['q03','q04']},
-  {id:'qf3',d:'10-13 juil.',type:'win',src:['q05','q06']},
-  {id:'qf4',d:'10-13 juil.',type:'win',src:['q07','q08']},
+  // 16es de finale avec dates précises (heure locale France)
+  {id:'r01',d:'28 juin',type:'r16',idx:0},   // 2e A vs 2e B
+  {id:'r02',d:'29 juin',type:'r16',idx:1},   // 1er C vs 2e F
+  {id:'r03',d:'29 juin',type:'r16',idx:2},   // Allemagne(1er E) vs 3e repêché
+  {id:'r04',d:'30 juin',type:'r16',idx:3},   // 1er F vs 2e C
+  {id:'r05',d:'30 juin',type:'r16',idx:4},   // 2e E vs 2e I
+  {id:'r06',d:'30 juin',type:'r16',idx:5},   // 1er I vs 3e repêché
+  {id:'r07',d:'1 juil.',type:'r16',idx:6},   // Mexique(1er A) vs 3e repêché
+  {id:'r08',d:'1 juil.',type:'r16',idx:7},   // 1er L vs 3e repêché
+  {id:'r09',d:'1 juil.',type:'r16',idx:8},   // 1er G vs 3e repêché
+  {id:'r10',d:'2 juil.',type:'r16',idx:9},   // États-Unis(1er D) vs 3e repêché
+  {id:'r11',d:'2 juil.',type:'r16',idx:10},  // 1er H vs 2e J
+  {id:'r12',d:'3 juil.',type:'r16',idx:11},  // 2e K vs 2e L
+  {id:'r13',d:'3 juil.',type:'r16',idx:12},  // 1er B vs 3e repêché
+  {id:'r14',d:'3 juil.',type:'r16',idx:13},  // 2e D vs 2e G
+  {id:'r15',d:'4 juil.',type:'r16',idx:14},  // Argentine(1er J) vs 2e H
+  {id:'r16',d:'4 juil.',type:'r16',idx:15},  // 1er K vs 3e repêché
+  {id:'q01',d:'5 juil.',type:'win',src:['r01','r02']},
+  {id:'q02',d:'5 juil.',type:'win',src:['r03','r04']},
+  {id:'q03',d:'6 juil.',type:'win',src:['r05','r06']},
+  {id:'q04',d:'6 juil.',type:'win',src:['r07','r08']},
+  {id:'q05',d:'7 juil.',type:'win',src:['r09','r10']},
+  {id:'q06',d:'7 juil.',type:'win',src:['r11','r12']},
+  {id:'q07',d:'8 juil.',type:'win',src:['r13','r14']},
+  {id:'q08',d:'8 juil.',type:'win',src:['r15','r16']},
+  {id:'qf1',d:'11 juil.',type:'win',src:['q01','q02']},
+  {id:'qf2',d:'11 juil.',type:'win',src:['q03','q04']},
+  {id:'qf3',d:'12 juil.',type:'win',src:['q05','q06']},
+  {id:'qf4',d:'12 juil.',type:'win',src:['q07','q08']},
   {id:'sf1',d:'15 juil.',type:'win',src:['qf1','qf2']},
   {id:'sf2',d:'16 juil.',type:'win',src:['qf3','qf4']},
   {id:'p3', d:'18 juil.',type:'lose',src:['sf1','sf2']},
