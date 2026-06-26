@@ -729,16 +729,17 @@ function matchHTML(id,date,hLabel,aLabel){
 
     // Cases prolong/TAB joueur
     let playerProlongTab='';
-    if(isElim&&isMine&&!locked){
+    if(isElim&&!locked){
+      const canEdit=isMine;
       playerProlongTab=`<div style="display:flex;gap:6px;margin-top:4px">
-        <label style="display:flex;align-items:center;gap:3px;font-size:10px;color:#888;cursor:pointer">
-          <input type="checkbox" ${pp.prolong?'checked':''} onchange="upPronoCheck('${idE}','${pnE}','prolong',this.checked)"> Prolong
+        <label style="display:flex;align-items:center;gap:3px;font-size:10px;color:#888;cursor:${canEdit?'pointer':'default'}">
+          <input type="checkbox" ${pp.prolong?'checked':''} ${canEdit?`onchange="upPronoCheck('${idE}','${pnE}','prolong',this.checked)"`:''} ${!canEdit?'disabled':''}> ⏱️
         </label>
-        <label style="display:flex;align-items:center;gap:3px;font-size:10px;color:#888;cursor:pointer">
-          <input type="checkbox" ${pp.tab?'checked':''} onchange="upPronoCheck('${idE}','${pnE}','tab',this.checked)"> TAB
+        <label style="display:flex;align-items:center;gap:3px;font-size:10px;color:#888;cursor:${canEdit?'pointer':'default'}">
+          <input type="checkbox" ${pp.tab?'checked':''} ${canEdit?`onchange="upPronoCheck('${idE}','${pnE}','tab',this.checked)"`:''} ${!canEdit?'disabled':''}> 🥅
         </label>
       </div>`;
-    } else if(isElim&&(pp.prolong||pp.tab)){
+    } else if(isElim&&locked&&(pp.prolong||pp.tab)){
       playerProlongTab=`<div style="font-size:10px;color:#aaa;margin-top:2px">${pp.prolong?'⏱️':''} ${pp.tab?'🥅':''}</div>`;
     }
 
