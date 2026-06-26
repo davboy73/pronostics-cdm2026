@@ -630,12 +630,13 @@ function showLogin(){
   const overlay=document.getElementById('login-overlay');
   const btns=document.getElementById('login-buttons');
   btns.innerHTML=PLAYERS.map((p,i)=>`
-    <button class="player-btn" onclick="login('${p}')">
+    <button class="player-btn" onclick="window.login('${p}')">
       <div class="player-avatar" style="background:${COLORS[i]}">${p[0]}</div>
       <span class="player-btn-name">${p}${p===ADMIN?' 🔑':''}</span>
     </button>`).join('');
   overlay.style.display='flex';
 }
+window.showLogin=showLogin;
 
 window.relogin=function(){
   try{localStorage.removeItem('wc2026_player');}catch(e){}
