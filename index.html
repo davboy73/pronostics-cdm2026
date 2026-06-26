@@ -138,16 +138,43 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div id="tab-rules" class="tab-content">
   <div class="content">
     <div class="card">
+      <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:8px">⚽ Phase de groupes</div>
       <div class="rule-item"><div class="rule-icon">🎯</div><div class="rule-text"><strong>Score exact</strong> → <strong>3 points</strong></div></div>
       <div class="rule-item"><div class="rule-icon">✅</div><div class="rule-text"><strong>Bon résultat</strong> (victoire / nul / défaite) → <strong>1 point</strong></div></div>
       <div class="rule-item"><div class="rule-icon">❌</div><div class="rule-text"><strong>Mauvais résultat</strong> → <strong>0 point</strong></div></div>
     </div>
-    <div class="example-box">
-      <strong>Exemple :</strong> Vrai score France 2–0 Sénégal<br>
-      • Pronostic <strong>2-0</strong> → 🎯 3 pts<br>
-      • Pronostic <strong>1-0</strong> → ✅ 1 pt<br>
-      • Pronostic <strong>0-1</strong> → ❌ 0 pt
+
+    <div class="card">
+      <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:8px">🏆 Phases éliminatoires</div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:12px">
+          <tr style="background:#f8f9fa">
+            <th style="padding:6px 8px;text-align:left;border-bottom:1px solid #eee">Phase</th>
+            <th style="padding:6px 8px;text-align:center;border-bottom:1px solid #eee">🎯 Exact</th>
+            <th style="padding:6px 8px;text-align:center;border-bottom:1px solid #eee">✅ Résultat</th>
+            <th style="padding:6px 8px;text-align:center;border-bottom:1px solid #eee">⏱️ Prolong</th>
+            <th style="padding:6px 8px;text-align:center;border-bottom:1px solid #eee">🥅 TAB</th>
+          </tr>
+          <tr><td style="padding:6px 8px;border-bottom:1px solid #eee">16es</td><td style="text-align:center;border-bottom:1px solid #eee"><strong>4</strong></td><td style="text-align:center;border-bottom:1px solid #eee">2</td><td style="text-align:center;border-bottom:1px solid #eee">+1</td><td style="text-align:center;border-bottom:1px solid #eee">+1</td></tr>
+          <tr style="background:#f8f9fa"><td style="padding:6px 8px;border-bottom:1px solid #eee">8es</td><td style="text-align:center;border-bottom:1px solid #eee"><strong>5</strong></td><td style="text-align:center;border-bottom:1px solid #eee">3</td><td style="text-align:center;border-bottom:1px solid #eee">+1</td><td style="text-align:center;border-bottom:1px solid #eee">+1</td></tr>
+          <tr><td style="padding:6px 8px;border-bottom:1px solid #eee">Quarts</td><td style="text-align:center;border-bottom:1px solid #eee"><strong>6</strong></td><td style="text-align:center;border-bottom:1px solid #eee">4</td><td style="text-align:center;border-bottom:1px solid #eee">+1</td><td style="text-align:center;border-bottom:1px solid #eee">+1</td></tr>
+          <tr style="background:#f8f9fa"><td style="padding:6px 8px;border-bottom:1px solid #eee">Demies</td><td style="text-align:center;border-bottom:1px solid #eee"><strong>8</strong></td><td style="text-align:center;border-bottom:1px solid #eee">5</td><td style="text-align:center;border-bottom:1px solid #eee">+1</td><td style="text-align:center;border-bottom:1px solid #eee">+1</td></tr>
+          <tr><td style="padding:6px 8px;border-bottom:1px solid #eee">Petite finale</td><td style="text-align:center;border-bottom:1px solid #eee"><strong>6</strong></td><td style="text-align:center;border-bottom:1px solid #eee">4</td><td style="text-align:center;border-bottom:1px solid #eee">+1</td><td style="text-align:center;border-bottom:1px solid #eee">+1</td></tr>
+          <tr style="background:#f8f9fa"><td style="padding:6px 8px">Finale</td><td style="text-align:center"><strong>10</strong></td><td style="text-align:center">6</td><td style="text-align:center">+1</td><td style="text-align:center">+1</td></tr>
+        </table>
+      </div>
+      <div class="rule-item" style="margin-top:8px"><div class="rule-icon">⏱️</div><div class="rule-text"><strong>Prolongations</strong> : cochez si vous pensez que le match ira aux prolongations. +1 pt si correct.</div></div>
+      <div class="rule-item"><div class="rule-icon">🥅</div><div class="rule-text"><strong>Tirs au but</strong> : cochez si vous pensez que le match ira aux TAB (après prolong.). +1 pt si correct.</div></div>
+      <div class="rule-item"><div class="rule-icon">📝</div><div class="rule-text">Le <strong>score à saisir</strong> est celui à 90 min (ou fin des prolongations). Les TAB ne changent pas le score.</div></div>
     </div>
+
+    <div class="example-box">
+      <strong>Exemple :</strong> France 1–1 Angleterre, prolong., puis France gagne aux TAB<br>
+      → Saisir score <strong>1-1</strong>, cocher ✅ Prolong + ✅ TAB<br>
+      • Pronostic 1-1 + Prolong + TAB → 🎯 score exact +1+1 = <strong>max pts</strong><br>
+      • Pronostic 1-0 + Prolong → ❌ mauvais résultat, mais ⏱️ +1 si prolong cochée
+    </div>
+
     <div class="card" style="margin-top:10px">
       <div class="rule-item"><div class="rule-icon">🤖</div><div class="rule-text">Les équipes qualifiées apparaissent <strong>automatiquement</strong> dans les phases éliminatoires.</div></div>
       <div class="rule-item"><div class="rule-icon">🔴</div><div class="rule-text"><strong>David</strong> est le seul à pouvoir saisir les vrais scores.</div></div>
@@ -421,21 +448,60 @@ function teamLbl(t){return t||'<span class="tbd">À déterminer</span>';}
 
 // ─── POINTS ────────────────────────────────────────────────────────────────
 function getRes(h,a){return h>a?'H':h<a?'A':'D';}
-function calcPts(rh,ra,ph,pa){
+
+// ─── BARÈME PAR PHASE ────────────────────────────────────────────────────
+const BAREME = {
+  group: {exact:3, result:1},
+  r16:   {exact:4, result:2},
+  q:     {exact:5, result:3},
+  qf:    {exact:6, result:4},
+  sf:    {exact:8, result:5},
+  p3:    {exact:6, result:4},
+  fin:   {exact:10,result:6},
+};
+
+function getPhase(mid){
+  if(mid.startsWith('r')) return 'r16';
+  if(mid.startsWith('q0')) return 'q';
+  if(mid.startsWith('qf')) return 'qf';
+  if(mid.startsWith('sf')) return 'sf';
+  if(mid==='p3') return 'p3';
+  if(mid==='fin') return 'fin';
+  return 'group';
+}
+
+function calcPts(rh,ra,ph,pa,rProlong,rTab,pProlong,pTab){
   if([rh,ra,ph,pa].some(x=>x===''||x===null||x===undefined)) return null;
   const v=[rh,ra,ph,pa].map(Number);
   if(v.some(isNaN)) return null;
-  if(v[0]===v[2]&&v[1]===v[3]) return 3;
-  if(getRes(v[0],v[1])===getRes(v[2],v[3])) return 1;
-  return 0;
+  return null; // sera calculé dans calcPtsForMatch
 }
+
+function calcPtsForMatch(mid, rh, ra, ph, pa, rProlong, rTab, pProlong, pTab){
+  if([rh,ra,ph,pa].some(x=>x===''||x===null||x===undefined)) return null;
+  const v=[rh,ra,ph,pa].map(Number);
+  if(v.some(isNaN)) return null;
+  const phase=getPhase(mid);
+  const bar=BAREME[phase]||BAREME.group;
+  let pts=0;
+  if(v[0]===v[2]&&v[1]===v[3]) pts=bar.exact;
+  else if(getRes(v[0],v[1])===getRes(v[2],v[3])) pts=bar.result;
+  else return 0;
+  // Bonus prolong/tab (phases éliminatoires uniquement)
+  if(phase!=='group'){
+    if(rProlong&&pProlong) pts+=1;
+    if(rTab&&pTab) pts+=1;
+  }
+  return pts;
+}
+
 function totalPts(player){
   let t=0;
   const all=[...GROUP_MATCHES.map(m=>m.id),...ELIM.map(m=>m.id)];
   for(const id of all){
     const s=scores[id]||{};
     const p=(pronos[id]||{})[player]||{};
-    const pts=calcPts(s.h,s.a,p.h,p.a);
+    const pts=calcPtsForMatch(id,s.h,s.a,p.h,p.a,s.prolong,s.tab,p.prolong,p.tab);
     if(pts!==null) t+=pts;
   }
   return t;
@@ -620,20 +686,61 @@ function matchHTML(id,date,hLabel,aLabel){
   const rh=s.h??'', ra=s.a??'';
   const isAdmin=currentPlayer===ADMIN;
   const locked=locks[id]||false;
-  const idE=id.replace(/'/g,"\'");
+  const idE=id.replace(/'/g,"'");
+  const phase=getPhase(id);
+  const isElim=phase!=='group';
+  const bar=BAREME[phase]||BAREME.group;
 
-  const scoreInp=(side,val)=>`<input class="score-inp" data-score-id="${id}" data-side="${side}" type="number" min="0" max="30" inputmode="numeric" value="${val}" placeholder="-" ${(isAdmin&&!locked)?'oninput="upScore(\''+idE+'\',\''+side+'\',this.value)"':''} ${(!isAdmin||locked)?'disabled':''}>`;
+  const scoreInp=(side,val)=>`<input class="score-inp" data-score-id="${id}" data-side="${side}" type="number" min="0" max="30" inputmode="numeric" value="${val}" placeholder="-" ${(isAdmin&&!locked)?'oninput="upScore(''+idE+'',''+side+'',this.value)"':''} ${(!isAdmin||locked)?'disabled':''}>`;
 
-  let phtml='<div class="pronos-section"><div class="pronos-label">Pronostics</div><div class="pronos-grid">';
+  // Cases prolong / TAB pour phases éliminatoires
+  let prolongTabHTML='';
+  if(isElim){
+    const rProlong=s.prolong||false;
+    const rTab=s.tab||false;
+    // Score réel : cases admin
+    const adminProlongTab=isAdmin&&!locked?`
+      <div style="display:flex;gap:8px;margin-top:6px;justify-content:center">
+        <label style="display:flex;align-items:center;gap:4px;font-size:11px;color:#888;cursor:pointer">
+          <input type="checkbox" ${rProlong?'checked':''} onchange="upScoreCheck('${idE}','prolong',this.checked)" ${locked?'disabled':''}> Prolongations
+        </label>
+        <label style="display:flex;align-items:center;gap:4px;font-size:11px;color:#888;cursor:pointer">
+          <input type="checkbox" ${rTab?'checked':''} onchange="upScoreCheck('${idE}','tab',this.checked)" ${locked?'disabled':''}> Tirs au but
+        </label>
+      </div>`:
+      (rProlong||rTab)?`<div style="text-align:center;font-size:11px;color:#888;margin-top:4px">${rProlong?'⏱️ Prolongations':''} ${rTab?'🥅 Tirs au but':''}</div>`:'';
+    prolongTabHTML=adminProlongTab;
+  }
+
+  let phtml='<div class="pronos-section"><div class="pronos-label">Pronostics${isElim?` · <span style="color:#e67e22">Exact=${bar.exact}pts · Résultat=${bar.result}pts${isElim?" · Prolong/TAB=+1":""}`:""}</span></div><div class="pronos-grid">';
+  // Fix : fermer le span correctement
+  phtml=`<div class="pronos-section"><div class="pronos-label">Pronostics${isElim?` <span style="font-weight:400;color:#e67e22;font-size:9px">🎯${bar.exact}pts · ✅${bar.result}pts · Prolong/TAB +1</span>`:''}</div><div class="pronos-grid">`;
+
   for(const pn of PLAYERS){
     const pp=(pronos[id]||{})[pn]||{};
-    const pts=calcPts(rh,ra,pp.h??'',pp.a??'');
-    const badge=pts===3?'<span class="pts pts-3">+3</span>':pts===1?'<span class="pts pts-1">+1</span>':pts===0&&rh!==''?'<span class="pts pts-0">0</span>':'';
+    const pts=calcPtsForMatch(id,rh,ra,pp.h??'',pp.a??'',s.prolong,s.tab,pp.prolong,pp.tab);
+    const badge=pts===null?'':pts>=bar.exact?`<span class="pts pts-3">🎯${pts}</span>`:pts>0?`<span class="pts pts-1">✅${pts}</span>`:rh!==''?`<span class="pts pts-0">0❌</span>`:'';
     const isMine=currentPlayer===pn;
-    const pnE=pn.replace(/'/g,"\'");
+    const pnE=pn.replace(/'/g,"'");
     const dis=(locked||!isMine)?'disabled':'';
-    const onH=(isMine&&!locked)?'oninput="upProno(\''+idE+'\',\''+pnE+'\',\'h\',this.value)"':'';
-    const onA=(isMine&&!locked)?'oninput="upProno(\''+idE+'\',\''+pnE+'\',\'a\',this.value)"':'';
+    const onH=(isMine&&!locked)?`oninput="upProno('${idE}','${pnE}','h',this.value)"`:'';
+    const onA=(isMine&&!locked)?`oninput="upProno('${idE}','${pnE}','a',this.value)"`:'';
+
+    // Cases prolong/TAB joueur
+    let playerProlongTab='';
+    if(isElim&&isMine&&!locked){
+      playerProlongTab=`<div style="display:flex;gap:6px;margin-top:4px">
+        <label style="display:flex;align-items:center;gap:3px;font-size:10px;color:#888;cursor:pointer">
+          <input type="checkbox" ${pp.prolong?'checked':''} onchange="upPronoCheck('${idE}','${pnE}','prolong',this.checked)"> Prolong
+        </label>
+        <label style="display:flex;align-items:center;gap:3px;font-size:10px;color:#888;cursor:pointer">
+          <input type="checkbox" ${pp.tab?'checked':''} onchange="upPronoCheck('${idE}','${pnE}','tab',this.checked)"> TAB
+        </label>
+      </div>`;
+    } else if(isElim&&(pp.prolong||pp.tab)){
+      playerProlongTab=`<div style="font-size:10px;color:#aaa;margin-top:2px">${pp.prolong?'⏱️':''} ${pp.tab?'🥅':''}</div>`;
+    }
+
     phtml+=`<div class="prono-cell${isMine?' mine':''}" data-id="${id}" data-player="${pn}">
       <div class="pname">${pn}${isMine&&!locked?' ✏':''}${locked?' 🔒':''}</div>
       <div class="prono-row">
@@ -642,11 +749,12 @@ function matchHTML(id,date,hLabel,aLabel){
         <input class="prono-inp" type="number" min="0" max="20" inputmode="numeric" value="${pp.a??''}" placeholder="-" ${onA} ${dis}>
         ${badge}
       </div>
+      ${playerProlongTab}
     </div>`;
   }
   phtml+='</div></div>';
 
-  const lockTxt=locked?'🔒 Verrouille - cliquer pour deverrouiller':'🔓 Verrouiller ce match';
+  const lockTxt=locked?'🔒 Verrouillé - cliquer pour déverrouiller':'🔓 Verrouiller ce match';
   const lockBg=locked?'#fef2f2':'#f0faf4';
   const lockColor=locked?'#c0392b':'#0d6e3b';
   const lockBtn=isAdmin?`<button class="lock-btn" onclick="toggleLock('${idE}')" style="margin-top:8px;width:100%;padding:6px;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;background:${lockBg};color:${lockColor}">${lockTxt}</button>`:'';
@@ -663,31 +771,12 @@ function matchHTML(id,date,hLabel,aLabel){
       <div class="team right ${aLabel.includes('ter')?'tbd':''}">${aLabel}</div>
     </div>
     <div class="real-label">score reel</div>
+    ${prolongTabHTML}
     ${phtml}
     ${lockBtn}
   </div>`;
 }
 
-
-function getTodayLabel(){
-  const now=new Date();
-  const day=now.getDate();
-  const month=now.getMonth()+1;
-  const monthsFull=['','janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
-  return `${day} ${monthsFull[month]}`;
-}
-
-function simpleMatchLine(m){
-  const s=scores[m.id]||{};
-  const hasScore=s.h!==''&&s.h!==undefined&&s.a!==''&&s.a!==undefined;
-  const scoreStr=hasScore?`<span style="font-weight:700;color:#0d6e3b;margin:0 4px">${s.h} – ${s.a}</span>`:`<span style="color:#bbb;margin:0 4px">vs</span>`;
-  const grpLabel=m.g?`<span style="font-size:10px;background:#f0f0f0;color:#888;padding:1px 6px;border-radius:8px;margin-left:6px;white-space:nowrap">Gr. ${m.g}</span>`:'';
-  return `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0">
-    <span style="font-size:13px;font-weight:600;flex:1;text-align:right">${m.h}</span>
-    ${scoreStr}
-    <span style="font-size:13px;font-weight:600;flex:1;text-align:left;display:flex;align-items:center">${m.a}${grpLabel}</span>
-  </div>`;
-}
 
 function renderToday(){
   const el=document.getElementById('today-section');
@@ -864,6 +953,23 @@ function renderMatches(){
   el.innerHTML=html;
 }
 
+
+window.upScoreCheck=function(id,field,val){
+  if(currentPlayer!==ADMIN) return;
+  if(locks[id]) return;
+  if(!scores[id]) scores[id]={};
+  scores[id][field]=val;
+  set(ref(db,`scores/${id}/${field}`),val);
+}
+
+window.upPronoCheck=function(id,player,field,val){
+  if(currentPlayer!==player) return;
+  if(locks[id]) return;
+  if(!pronos[id]) pronos[id]={};
+  if(!pronos[id][player]) pronos[id][player]={};
+  pronos[id][player][field]=val;
+  set(ref(db,`pronos/${id}/${player}/${field}`),val);
+}
 
 window.upScore=function(id,side,v){
   if(currentPlayer!==ADMIN) return;
