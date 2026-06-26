@@ -1019,13 +1019,21 @@ function renderRanking(){
 }
 
 // ─── INIT ──────────────────────────────────────────────────────────────────
-// Essai de reconnexion auto si déjà identifié
-let savedPlayer=null;
-try{savedPlayer=localStorage.getItem('wc2026_player');}catch(e){}
-if(savedPlayer&&PLAYERS.includes(savedPlayer)){
-  window.login(savedPlayer);
-} else {
-  showLogin();
+try {
+  let savedPlayer=null;
+  try{savedPlayer=localStorage.getItem('wc2026_player');}catch(e){}
+  if(savedPlayer&&PLAYERS.includes(savedPlayer)){
+    window.login(savedPlayer);
+  } else {
+    showLogin();
+  }
+} catch(err) {
+  console.error('Erreur init:', err);
+  // Fallback : afficher quand même le login
+  try { showLogin(); } catch(e) { 
+    document.getElementById('login-buttons').innerHTML = 
+      PLAYERS.map((p,i)=>`<button style="display:block;width:100%;padding:12px;margin-bottom:8px;border:1px solid #eee;border-radius:10px;background:#fff;font-size:15px;font-weight:600;cursor:pointer" onclick="window.login('${p}')">${p}</button>`).join('');
+  }
 }
 </script>
 
