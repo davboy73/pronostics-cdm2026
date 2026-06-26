@@ -747,18 +747,24 @@ function toggleGroup(id){
   const arrow=document.getElementById('ga-'+id);
   if(!body) return;
   const isOpen=body.classList.contains('open');
-  // Fermer tous les groupes ouverts
-  document.querySelectorAll('.group-body.open').forEach(el=>{
-    el.classList.remove('open');
+
+  // Trouver le parent (si ce groupe est imbriqué dans un autre)
+  const parentBody=body.closest('.group-body');
+
+  // Fermer uniquement les frères (même niveau), pas le parent
+  const container=parentBody||document.getElementById('matches-content');
+  container.querySelectorAll(':scope > .group-body-inner > .group-body, :scope > .group-body').forEach(el=>{
+    if(el!==body){
+      el.classList.remove('open');
+      const siblingId=el.id.replace('gb-','');
+      const siblingArrow=document.getElementById('ga-'+siblingId);
+      if(siblingArrow) siblingArrow.classList.remove('open');
+    }
   });
-  document.querySelectorAll('.group-arrow.open').forEach(el=>{
-    el.classList.remove('open');
-  });
-  // Si le groupe était fermé, l'ouvrir
-  if(!isOpen){
-    body.classList.add('open');
-    if(arrow) arrow.classList.add('open');
-  }
+
+  // Ouvrir/fermer le groupe cliqué
+  body.classList.toggle('open',!isOpen);
+  if(arrow) arrow.classList.toggle('open',!isOpen);
 }
 window.toggleGroup=toggleGroup;
 
