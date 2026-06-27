@@ -128,6 +128,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
+<div id="tab-groupes" class="tab-content">
+  <div class="content" id="groupes-content"></div>
+</div>
+
 <div id="tab-ranking" class="tab-content">
   <div class="content">
     <div class="stats-row" id="stats-row"></div>
@@ -186,6 +190,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <nav class="bottom-nav">
   <button class="nav-btn active" onclick="showTab('players',this)"><span class="nav-icon">👥</span><span>Joueurs</span></button>
   <button class="nav-btn" onclick="showTab('matches',this)"><span class="nav-icon">📅</span><span>Matchs</span></button>
+  <button class="nav-btn" onclick="showTab('groupes',this)"><span class="nav-icon">📊</span><span>Groupes</span></button>
   <button class="nav-btn" onclick="showTab('ranking',this)"><span class="nav-icon">🏆</span><span>Classement</span></button>
   <button class="nav-btn" onclick="showTab('rules',this)"><span class="nav-icon">📋</span><span>Règles</span></button>
 </nav>
@@ -362,7 +367,7 @@ function getR16Pairs(){
   return [
     [getFinisher('A',1),  getFinisher('B',1)],   // r01: 28 juin - Afrique du Sud vs Canada
     [getFinisher('C',0),  getFinisher('F',1)],   // r02: 29 juin - Brésil vs Japon (2F)
-    [getFinisher('E',0),  getFinisher('D',1)],   // r03: 29 juin - Allemagne vs Paraguay (2D)
+    [getFinisher('E',0),  t[0]],                 // r03: 29 juin - Allemagne vs Paraguay (3D repêché)
     [getFinisher('F',0),  getFinisher('C',1)],   // r04: 29 juin - Pays-Bas vs Maroc
     [getFinisher('E',1),  getFinisher('I',1)],   // r05: 30 juin - Côte d'Ivoire vs Norvège (2I)
     [getFinisher('I',0),  t[0]],                 // r06: 30 juin - France vs 3e F (Suède)
@@ -664,6 +669,7 @@ window.showTab=function(name,btn){
   if(name==='ranking') renderRanking();
   if(name==='matches') renderMatches();
   if(name==='players') renderPlayers();
+  if(name==='groupes') renderGroupes();
 }
 
 function renderPlayers(){
@@ -798,6 +804,47 @@ function simpleMatchLine(m){
     <span style="font-size:13px;font-weight:600;flex:1;text-align:left;display:flex;align-items:center">${m.a}${grpLabel}</span>
   </div>`;
 }
+
+function renderGroupes(){
+  const el=document.getElementById('groupes-content');
+  if(!el) return;
+  const GNAMES={A:'Groupe A',B:'Groupe B',C:'Groupe C',D:'Groupe D',E:'Groupe E',F:'Groupe F',G:'Groupe G',H:'Groupe H',I:'🇫🇷 Groupe I',J:'Groupe J',K:'Groupe K',L:'Groupe L'};
+  let html='';
+  for(const grp of 'ABCDEFGHIJKL'.split('')){
+    const standings=getStandings(grp);
+    const played=GROUP_MATCHES.filter(m=>m.g===grp&&scores[m.id]&&scores[m.id].h!==''&&scores[m.id].h!==undefined).length;
+    html+=`<div style="background:#fff;border-radius:10px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.07);overflow:hidden">
+      <div style="background:linear-gradient(90deg,#1a3a5c,#0d6e3b);color:#fff;padding:7px 12px;font-size:12px;font-weight:700">${GNAMES[grp]} <span style="font-weight:400;opacity:.7;font-size:10px">${played}/6 matchs joués</span></div>
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <tr style="background:#f8f9fa">
+          <th style="padding:5px 8px;text-align:left;color:#888;font-weight:500">#</th>
+          <th style="padding:5px 8px;text-align:left;color:#888;font-weight:500">Équipe</th>
+          <th style="padding:5px 4px;text-align:center;color:#888;font-weight:500">J</th>
+          <th style="padding:5px 4px;text-align:center;color:#888;font-weight:500">G</th>
+          <th style="padding:5px 4px;text-align:center;color:#888;font-weight:500">N</th>
+          <th style="padding:5px 4px;text-align:center;color:#888;font-weight:500">P</th>
+          <th style="padding:5px 4px;text-align:center;color:#888;font-weight:500">DB</th>
+          <th style="padding:5px 8px;text-align:center;color:#888;font-weight:500">Pts</th>
+        </tr>`;
+    standings.forEach((s,i)=>{
+      const qual=i<2?'background:#f0faf4':'';
+      const rank=i===0?'🥇':i===1?'🥈':i===2?'🥉':'4';
+      html+=`<tr style="${qual};border-top:1px solid #f0f0f0">
+        <td style="padding:6px 8px">${rank}</td>
+        <td style="padding:6px 8px;font-weight:${i<2?'600':'400'}">${s.team}</td>
+        <td style="padding:6px 4px;text-align:center;color:#666">${s.j}</td>
+        <td style="padding:6px 4px;text-align:center;color:#666">${s.g||0}</td>
+        <td style="padding:6px 4px;text-align:center;color:#666">${s.n||0}</td>
+        <td style="padding:6px 4px;text-align:center;color:#666">${s.p||0}</td>
+        <td style="padding:6px 4px;text-align:center;color:#666">${s.db>=0?'+'+s.db:s.db}</td>
+        <td style="padding:6px 8px;text-align:center;font-weight:700;color:#0d6e3b">${s.pts}</td>
+      </tr>`;
+    });
+    html+='</table></div>';
+  }
+  el.innerHTML=html;
+}
+window.renderGroupes=renderGroupes;
 
 function renderToday(){
   const el=document.getElementById('today-section');
