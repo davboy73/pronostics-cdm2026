@@ -346,36 +346,36 @@ function getBest3rds(){
     const s=getStandings(grp);
     if(s[2]) thirds.push({team:s[2].team,grp,...s[2]});
   });
-  if(thirds.length<8) return Array(8).fill(null);
+  if(thirds.length<8) return Array(9).fill(null);
   thirds.sort((a,b)=>{
     if(b.pts!==a.pts) return b.pts-a.pts;
     if(b.db!==a.db) return b.db-a.db;
     if(b.bp!==a.bp) return b.bp-a.bp;
     return a.grp.localeCompare(b.grp);
   });
-  return thirds.slice(0,8).map(x=>x.team);
+  return [...thirds.slice(0,8).map(x=>x.team), null];
 }
 
 function getR16Pairs(){
-  // Appariements officiels FIFA CdM 2026 (source : résultats réels)
+  // Appariements officiels FIFA CdM 2026 (source : tableau L'Equipe)
   const t=getBest3rds();
   return [
-    [getFinisher('A',1), getFinisher('B',0)],   // r01: 28 juin - Afrique du Sud vs Canada (2eA vs 1erB)
-    [getFinisher('C',0), t[0]],                 // r02: 29 juin - Brésil vs 3e repêché (Japon)
-    [getFinisher('E',0), t[1]],                 // r03: 29 juin - Allemagne vs 3e repêché
-    [getFinisher('F',0), getFinisher('C',1)],   // r04: 30 juin - Pays-Bas vs Maroc
-    [getFinisher('I',0), getFinisher('E',1)],   // r05: 30 juin - France vs Côte d'Ivoire
-    [getFinisher('I',0), t[2]],                 // r06: 30 juin - 1er I vs 3e repêché
-    [getFinisher('A',0), t[3]],                 // r07: 1 juil  - Mexique vs 3e repêché
-    [getFinisher('L',0), t[4]],                 // r08: 1 juil  - 1er L vs 3e repêché
-    [getFinisher('G',0), t[5]],                 // r09: 1 juil  - 1er G vs 3e repêché
-    [getFinisher('D',0), t[6]],                 // r10: 2 juil  - États-Unis vs 3e repêché
-    [getFinisher('H',0), getFinisher('J',1)],   // r11: 2 juil  - 1er H vs Autriche/Algérie
-    [getFinisher('K',1), getFinisher('L',1)],   // r12: 3 juil  - 2e K vs 2e L
-    [getFinisher('B',1), t[7]],                 // r13: 3 juil  - Suisse vs 3e repêché
-    [getFinisher('D',1), getFinisher('G',1)],   // r14: 3 juil  - 2e D vs 2e G
-    [getFinisher('J',0), getFinisher('H',1)],   // r15: 4 juil  - Argentine vs 2e H
-    [getFinisher('K',0), getFinisher('F',1)],   // r16: 4 juil  - 1er K vs 2e F
+    [getFinisher('E',0),  t[0]],                  // r01 - Allemagne vs 3A/B/C/D/F
+    [getFinisher('I',0),  t[1]],                  // r02 - 1I vs 3C/D/F/G/H
+    [getFinisher('A',1),  getFinisher('B',0)],    // r03 - Afrique du Sud vs Canada (2A vs 1B... ici 2A=AfdS, 1B=Canada selon résultats)
+    [getFinisher('F',0),  getFinisher('C',1)],    // r04 - Pays-Bas vs Maroc
+    [getFinisher('C',0),  getFinisher('I',1)],    // r05 - Brésil vs 2I (Japon)
+    [getFinisher('E',1),  t[2]],                  // r06 - CdI vs 2I
+    [getFinisher('A',0),  t[3]],                  // r07 - Mexique vs 3C/E/F/H/I
+    [getFinisher('L',0),  t[4]],                  // r08 - 1L vs 3E/H/I/J/K
+    [getFinisher('D',0),  t[5]],                  // r09 - États-Unis vs 3B/E/F/I/J
+    [getFinisher('G',0),  t[6]],                  // r10 - 1G vs 3A/E/H/I/J
+    [getFinisher('K',1),  getFinisher('L',1)],    // r11 - 2K vs 2L
+    [getFinisher('H',0),  getFinisher('J',1)],    // r12 - 1H vs 2J
+    [getFinisher('J',0),  getFinisher('H',1)],    // r13 - Argentine vs 2H
+    [getFinisher('D',1),  getFinisher('G',1)],    // r14 - Australie vs 2G
+    [getFinisher('B',1),  t[7]],                  // r15 - Suisse vs 3E/F/G/I/J
+    [getFinisher('K',0),  t[8]],                  // r16 - 1K vs 3D/E/I/J/L
   ];
 }
 
