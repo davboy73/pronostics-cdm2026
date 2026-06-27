@@ -362,25 +362,25 @@ function getBest3rds(){
 }
 
 function getR16Pairs(){
-  // Appariements officiels FIFA CdM 2026 (source : ESPN/Sky Sports/Wikipedia)
+  // Appariements en dur - source beIN Sports / L'Equipe 27 juin 2026
   const t=getBest3rds();
   return [
-    [getFinisher('A',1),  getFinisher('B',1)],   // r01: 28 juin - Afrique du Sud vs Canada
-    [getFinisher('C',0),  getFinisher('F',1)],   // r02: 29 juin - Brésil vs Japon (2F)
-    [getFinisher('E',0),  t[0]],                 // r03: 29 juin - Allemagne vs Paraguay (3D repêché)
-    [getFinisher('F',0),  getFinisher('C',1)],   // r04: 29 juin - Pays-Bas vs Maroc
-    [getFinisher('E',1),  getFinisher('I',1)],   // r05: 30 juin - Côte d'Ivoire vs Norvège (2I)
-    [getFinisher('I',0),  t[0]],                 // r06: 30 juin - France vs 3e F (Suède)
-    [getFinisher('A',0),  t[1]],                 // r07: 1 juil  - Mexique vs 3e C/E
-    [getFinisher('L',0),  t[2]],                 // r08: 1 juil  - 1er L vs 3e I/K/J
-    [getFinisher('D',0),  t[3]],                 // r09: 1 juil  - États-Unis vs 3e B (Bosnie)
-    [getFinisher('G',0),  t[4]],                 // r10: 1 juil  - Belgique vs 3e A/E/H/I/J
-    [getFinisher('K',1),  getFinisher('L',1)],   // r11: 2 juil  - 2e K vs 2e L
-    [getFinisher('H',0),  getFinisher('J',1)],   // r12: 2 juil  - Espagne vs 2e J
-    [getFinisher('B',0),  t[5]],                 // r13: 3 juil  - Suisse vs 3e E/G/I/J
-    [getFinisher('K',0),  t[6]],                 // r14: 3 juil  - 1er K vs 3e D/E/I/J/L
-    [getFinisher('J',0),  getFinisher('H',1)],   // r15: 4 juil  - Argentine vs 2e H
-    [getFinisher('D',1),  getFinisher('G',1)],   // r16: 4 juil  - Australie vs 2e G
+    [getFinisher('A',1),   getFinisher('B',1)],   // 28 juin - Afrique du Sud vs Canada
+    [getFinisher('C',0),   getFinisher('F',1)],   // 29 juin - Brésil vs Japon
+    [getFinisher('E',0),   getFinisher('D',2)],   // 29 juin - Allemagne vs Paraguay (3e D)
+    [getFinisher('F',0),   getFinisher('C',1)],   // 30 juin - Pays-Bas vs Maroc
+    [getFinisher('E',1),   getFinisher('I',1)],   // 30 juin - Côte d'Ivoire vs Norvège
+    [getFinisher('I',0),   getFinisher('F',2)],   // 30 juin - France vs Suède (3e F)
+    [getFinisher('A',0),   t[0]],                 // 1 juil  - Mexique vs 3e C/E/F/H/I
+    [getFinisher('L',0),   t[1]],                 // 1 juil  - 1er L vs 3e E/H/I/J/K
+    [getFinisher('G',0),   t[2]],                 // 1 juil  - Belgique vs 3e A/E/H/I/J
+    [getFinisher('D',0),   getFinisher('B',2)],   // 2 juil  - États-Unis vs Bosnie (3e B)
+    [getFinisher('H',0),   getFinisher('J',1)],   // 2 juil  - Espagne vs Autriche ou Algérie
+    [getFinisher('K',1),   getFinisher('L',1)],   // 3 juil  - 2e K vs 2e L
+    [getFinisher('D',1),   getFinisher('G',1)],   // 3 juil  - Australie vs Égypte
+    [getFinisher('B',0),   t[3]],                 // 3 juil  - Suisse vs 3e E/F/G/I/J
+    [getFinisher('J',0),   getFinisher('H',1)],   // 4 juil  - Argentine vs Cap-Vert
+    [getFinisher('K',0),   t[4]],                 // 4 juil  - 1er K vs 3e D/E/I/J/L
   ];
 }
 
@@ -389,19 +389,19 @@ const ELIM=[
   {id:'r01',d:'28 juin',type:'r16',idx:0},   // Afrique du Sud vs Canada
   {id:'r02',d:'29 juin',type:'r16',idx:1},   // Brésil vs Japon
   {id:'r03',d:'29 juin',type:'r16',idx:2},   // Allemagne vs Paraguay
-  {id:'r04',d:'29 juin',type:'r16',idx:3},   // Pays-Bas vs Maroc
+  {id:'r04',d:'30 juin',type:'r16',idx:3},   // Pays-Bas vs Maroc
   {id:'r05',d:'30 juin',type:'r16',idx:4},   // Côte d'Ivoire vs Norvège
   {id:'r06',d:'30 juin',type:'r16',idx:5},   // France vs Suède
-  {id:'r07',d:'1 juil.',type:'r16',idx:6},   // Mexique vs 3e repêché
-  {id:'r08',d:'1 juil.',type:'r16',idx:7},   // 1er L vs 3e repêché
-  {id:'r09',d:'1 juil.',type:'r16',idx:8},   // États-Unis vs Bosnie
-  {id:'r10',d:'1 juil.',type:'r16',idx:9},   // Belgique vs 3e repêché
-  {id:'r11',d:'2 juil.',type:'r16',idx:10},  // 2e K vs 2e L
-  {id:'r12',d:'2 juil.',type:'r16',idx:11},  // Espagne vs 2e J
-  {id:'r13',d:'3 juil.',type:'r16',idx:12},  // Suisse vs 3e repêché
-  {id:'r14',d:'3 juil.',type:'r16',idx:13},  // 1er K vs 3e repêché
-  {id:'r15',d:'4 juil.',type:'r16',idx:14},  // Argentine vs 2e H
-  {id:'r16',d:'4 juil.',type:'r16',idx:15},  // Australie vs 2e G
+  {id:'r07',d:'1 juil.',type:'r16',idx:6},   // Mexique vs 3e C/E/F/H/I
+  {id:'r08',d:'1 juil.',type:'r16',idx:7},   // 1er L vs 3e E/H/I/J/K
+  {id:'r09',d:'1 juil.',type:'r16',idx:8},   // Belgique vs 3e A/E/H/I/J
+  {id:'r10',d:'2 juil.',type:'r16',idx:9},   // États-Unis vs Bosnie
+  {id:'r11',d:'2 juil.',type:'r16',idx:10},  // Espagne vs Autriche/Algérie
+  {id:'r12',d:'3 juil.',type:'r16',idx:11},  // 2e K vs 2e L
+  {id:'r13',d:'3 juil.',type:'r16',idx:12},  // Australie vs Égypte
+  {id:'r14',d:'3 juil.',type:'r16',idx:13},  // Suisse vs 3e E/F/G/I/J
+  {id:'r15',d:'4 juil.',type:'r16',idx:14},  // Argentine vs Cap-Vert
+  {id:'r16',d:'4 juil.',type:'r16',idx:15},  // 1er K vs 3e D/E/I/J/L
   {id:'q01',d:'5 juil.',type:'win',src:['r01','r02']},
   {id:'q02',d:'5 juil.',type:'win',src:['r03','r04']},
   {id:'q03',d:'6 juil.',type:'win',src:['r05','r06']},
