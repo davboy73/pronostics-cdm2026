@@ -697,7 +697,7 @@ function matchHTML(id,date,hLabel,aLabel){
   const isElim=phase!=='group';
   const bar=BAREME[phase]||BAREME.group;
 
-  const scoreInp=(side,val)=>`<input class="score-inp" data-score-id="${id}" data-side="${side}" type="number" min="0" max="30" inputmode="numeric" value="${val}" placeholder="-" ${(isAdmin&&!locked)?`oninput="upScore('${idE}','${side}',this.value)"`:''} ${(!isAdmin||locked)?'disabled':''}>`;
+  const scoreInp=(side,val)=>`<input class="score-inp" data-score-id="${id}" data-side="${side}" type="number" min="0" max="30" inputmode="numeric" value="${val}" placeholder="-" ${isAdmin?`oninput="upScore('${idE}','${side}',this.value)"`:''} ${!isAdmin?'disabled':''}>`;
 
   // Cases prolong / TAB pour phases éliminatoires
   let prolongTabHTML='';
@@ -1041,7 +1041,7 @@ window.upPronoCheck=function(id,player,field,val){
 
 window.upScore=function(id,side,v){
   if(currentPlayer!==ADMIN) return;
-  if(locks[id]) return;
+  // Admin peut toujours modifier même si verrouillé
   if(!scores[id]) scores[id]={};
   scores[id][side]=v;
   saveScore(id,side,v);
