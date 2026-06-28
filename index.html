@@ -354,7 +354,7 @@ const GROUP_MATCHES = [
 function getStandings(grp){
   const teams=GROUP_TEAMS[grp];
   const st={};
-  teams.forEach(t=>{st[t]={pts:0,j:0,bp:0,bc:0,db:0};});
+  teams.forEach(t=>{st[t]={pts:0,j:0,g:0,n:0,p:0,bp:0,bc:0,db:0};});
   GROUP_MATCHES.filter(m=>m.g===grp).forEach(m=>{
     const s=scores[m.id];
     if(!s||s.h===''||s.h===undefined||s.a===''||s.a===undefined) return;
@@ -363,7 +363,13 @@ function getStandings(grp){
     st[m.h].j++;st[m.a].j++;
     st[m.h].bp+=h;st[m.h].bc+=a;st[m.h].db+=h-a;
     st[m.a].bp+=a;st[m.a].bc+=h;st[m.a].db+=a-h;
-    if(h>a){st[m.h].pts+=3;}else if(h<a){st[m.a].pts+=3;}else{st[m.h].pts+=1;st[m.a].pts+=1;}
+    if(h>a){
+      st[m.h].pts+=3;st[m.h].g++;st[m.a].p++;
+    }else if(h<a){
+      st[m.a].pts+=3;st[m.a].g++;st[m.h].p++;
+    }else{
+      st[m.h].pts+=1;st[m.a].pts+=1;st[m.h].n++;st[m.a].n++;
+    }
   });
   return teams.sort((a,b)=>{
     const A=st[a],B=st[b];
