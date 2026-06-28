@@ -173,10 +173,58 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     </div>
 
     <div class="example-box">
-      <strong>Exemple :</strong> France 1–1 Angleterre, prolong., puis France gagne aux TAB<br>
-      → Saisir score <strong>1-1</strong>, cocher ✅ Prolong + ✅ TAB<br>
-      • Pronostic 1-1 + Prolong + TAB → 🎯 score exact +1+1 = <strong>max pts</strong><br>
-      • Pronostic 1-0 + Prolong → ❌ mauvais résultat, mais ⏱️ +1 si prolong cochée
+      <strong>Exemple :</strong> Afrique du Sud 0–0 Canada après prolongations, <strong>Canada gagne aux TAB</strong> (16es = 4pts exact / 2pts résultat)<br><br>
+      <table style="width:100%;border-collapse:collapse;font-size:11px">
+        <tr style="background:#d5f5e3;font-weight:600">
+          <td style="padding:4px 6px;border:1px solid #aed6b8">Pronostic</td>
+          <td style="padding:4px 6px;border:1px solid #aed6b8;text-align:center">Score</td>
+          <td style="padding:4px 6px;border:1px solid #aed6b8;text-align:center">Vainqueur</td>
+          <td style="padding:4px 6px;border:1px solid #aed6b8;text-align:center">⏱️</td>
+          <td style="padding:4px 6px;border:1px solid #aed6b8;text-align:center">🥅</td>
+          <td style="padding:4px 6px;border:1px solid #aed6b8;text-align:center;font-weight:700">Total</td>
+        </tr>
+        <tr style="background:#fff">
+          <td style="padding:4px 6px;border:1px solid #ddd">0-0 + Canada + ⏱️ + 🥅</td>
+          <td style="padding:4px 6px;border:1px solid #ddd;text-align:center">🎯 4pts</td>
+          <td style="padding:4px 6px;border:1px solid #ddd;text-align:center">✅ +0</td>
+          <td style="padding:4px 6px;border:1px solid #ddd;text-align:center">+1</td>
+          <td style="padding:4px 6px;border:1px solid #ddd;text-align:center">+1</td>
+          <td style="padding:4px 6px;border:1px solid #ddd;text-align:center;font-weight:700;color:#0d6e3b">6 pts</td>
+        </tr>
+        <tr style="background:#f8f9fa">
+          <td style="padding:4px 6px;border:1px solid #ddd">0-0 + Afrique du Sud + ⏱️ + 🥅</td>
+          <td style="padding:4px 6px;border:1px solid #ddd;text-align:center">✅ 2pts</td>
+          <td style="padding:4px 6px;border:1px solid #ddd;text-align:center">❌ +0</td>
+          <td style="padding:4px 6px;border:1px solid #ddd;text-align:center">+1</td>
+          <td style="padding:4px 6px;border:1px solid #ddd;text-align:center">+1</td>
+          <td style="padding:4px 6px;border:1px solid #ddd;text-align:center;font-weight:700;color:#0d6e3b">4 pts</td>
+        </tr>
+        <tr style="background:#fff">
+          <td style="padding:4px 6px;border:1px solid #ddd">1-1 + Canada + ⏱️ + 🥅</td>
+          <td style="padding:4px 6px;border:1px solid #ddd;text-align:center">❌ 0pt</td>
+          <td style="padding:4px 6px;border:1px solid #ddd;text-align:center">✅ +0</td>
+          <td style="padding:4px 6px;border:1px solid #ddd;text-align:center">+1</td>
+          <td style="padding:4px 6px;border:1px solid #ddd;text-align:center">+1</td>
+          <td style="padding:4px 6px;border:1px solid #ddd;text-align:center;font-weight:700;color:#e67e22">2 pts</td>
+        </tr>
+        <tr style="background:#f8f9fa">
+          <td style="padding:4px 6px;border:1px solid #ddd">0-0 + Canada + ⏱️ (sans 🥅)</td>
+          <td style="padding:4px 6px;border:1px solid #ddd;text-align:center">✅ 2pts</td>
+          <td style="padding:4px 6px;border:1px solid #ddd;text-align:center">✅ +0</td>
+          <td style="padding:4px 6px;border:1px solid #ddd;text-align:center">+1</td>
+          <td style="padding:4px 6px;border:1px solid #ddd;text-align:center;color:#c0392b">-1</td>
+          <td style="padding:4px 6px;border:1px solid #ddd;text-align:center;font-weight:700;color:#e67e22">2 pts</td>
+        </tr>
+        <tr style="background:#fff">
+          <td style="padding:4px 6px;border:1px solid #ddd">1-0 (sans ⏱️ ni 🥅)</td>
+          <td style="padding:4px 6px;border:1px solid #ddd;text-align:center">❌ 0pt</td>
+          <td style="padding:4px 6px;border:1px solid #ddd;text-align:center">— +0</td>
+          <td style="padding:4px 6px;border:1px solid #ddd;text-align:center">0</td>
+          <td style="padding:4px 6px;border:1px solid #ddd;text-align:center">0</td>
+          <td style="padding:4px 6px;border:1px solid #ddd;text-align:center;font-weight:700;color:#888">0 pt</td>
+        </tr>
+      </table>
+      <div style="margin-top:8px;font-size:11px;color:#888">💡 La 4ème ligne : 0-0 trouvé (+2pts) et Prolong juste (+1) mais TAB pas cochée alors qu'il y en a eu (-1) = 2pts</div>
     </div>
 
     <div class="card" style="margin-top:10px">
@@ -487,10 +535,26 @@ function calcPtsForMatch(mid, rh, ra, ph, pa, rProlong, rTab, pProlong, pTab, rT
   const phase=getPhase(mid);
   const bar=BAREME[phase]||BAREME.group;
   let pts=0;
-  if(v[0]===v[2]&&v[1]===v[3]) pts=bar.exact;
-  else if(getRes(v[0],v[1])===getRes(v[2],v[3])) pts=bar.result;
-  else return 0;
-  // Bonus/malus prolong/tab + vainqueur TAB
+
+  if(rTab && rTabWinner){
+    // Match aux TAB : score exact = bon score + bon vainqueur TAB
+    if(v[0]===v[2] && v[1]===v[3] && pTabWinner===rTabWinner){
+      pts=bar.exact; // score exact ET bon vainqueur
+    } else if(v[0]===v[2] && v[1]===v[3]){
+      pts=bar.result; // bon score mais mauvais vainqueur TAB
+    } else if(pTabWinner===rTabWinner){
+      pts=bar.result; // bon vainqueur TAB mais mauvais score
+    } else {
+      pts=0; // tout faux
+    }
+  } else {
+    // Match sans TAB : calcul normal
+    if(v[0]===v[2]&&v[1]===v[3]) pts=bar.exact;
+    else if(getRes(v[0],v[1])===getRes(v[2],v[3])) pts=bar.result;
+    else pts=0;
+  }
+
+  // Bonus/malus prolong/tab
   if(phase!=='group'){
     if(pProlong) pts+=(rProlong?1:-1);
     if(pTab) pts+=(rTab?1:-1);
