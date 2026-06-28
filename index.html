@@ -1056,7 +1056,6 @@ window.upPronoStr=function(id,player,field,val){
 
 window.onAdminProlong=function(id,checked){
   if(!checked){
-    // Décocher prolong décoche aussi TAB
     const tabEl=document.getElementById('chk-tab-'+id);
     if(tabEl){ tabEl.checked=false; upScoreCheck(id,'tab',false); }
   }
@@ -1064,15 +1063,15 @@ window.onAdminProlong=function(id,checked){
 }
 window.onAdminTab=function(id,checked){
   if(checked){
-    // Cocher TAB coche aussi Prolong
     const prolEl=document.getElementById('chk-prolong-'+id);
     if(prolEl){ prolEl.checked=true; upScoreCheck(id,'prolong',true); }
   }
   upScoreCheck(id,'tab',checked);
+  // Re-render pour afficher/masquer le menu vainqueur TAB
+  setTimeout(()=>{ if(document.getElementById('tab-matches').classList.contains('active')) renderMatches(); }, 300);
 }
 window.onPlayerProlong=function(id,player,checked){
   if(!checked){
-    // Décocher prolong décoche aussi TAB
     const tabEl=document.getElementById('chk-ptab-'+id+'-'+player);
     if(tabEl){ tabEl.checked=false; upPronoCheck(id,player,'tab',false); }
   }
@@ -1080,11 +1079,12 @@ window.onPlayerProlong=function(id,player,checked){
 }
 window.onPlayerTab=function(id,player,checked){
   if(checked){
-    // Cocher TAB coche aussi Prolong
     const prolEl=document.getElementById('chk-pprolong-'+id+'-'+player);
     if(prolEl){ prolEl.checked=true; upPronoCheck(id,player,'prolong',true); }
   }
   upPronoCheck(id,player,'tab',checked);
+  // Re-render pour afficher/masquer le menu vainqueur TAB
+  setTimeout(()=>{ if(document.getElementById('tab-matches').classList.contains('active')) renderMatches(); }, 300);
 }
 
 window.upScoreCheck=function(id,field,val){
