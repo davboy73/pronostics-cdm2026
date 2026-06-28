@@ -707,10 +707,10 @@ function matchHTML(id,date,hLabel,aLabel){
     const adminProlongTab=isAdmin&&!locked?`
       <div style="display:flex;gap:8px;margin-top:6px;justify-content:center">
         <label style="display:flex;align-items:center;gap:4px;font-size:11px;color:#888;cursor:pointer">
-          <input type="checkbox" ${rProlong?'checked':''} onchange="upScoreCheck('${idE}','prolong',this.checked)" ${locked?'disabled':''}> Prolongations
+          <input type="checkbox" ${rProlong?'checked':''} onchange="if(!this.checked){upScoreCheck('${idE}','tab',false);document.querySelectorAll('[data-tab-id=\'${idE}\']').forEach(el=>el.checked=false);}upScoreCheck('${idE}','prolong',this.checked)" ${locked?'disabled':''}> Prolongations
         </label>
         <label style="display:flex;align-items:center;gap:4px;font-size:11px;color:#888;cursor:pointer">
-          <input type="checkbox" ${rTab?'checked':''} onchange="upScoreCheck('${idE}','tab',this.checked)" ${locked?'disabled':''}> Tirs au but
+          <input type="checkbox" ${rTab?'checked':''} onchange="if(this.checked){upScoreCheck('${idE}','prolong',true);document.querySelectorAll('[data-prolong-id=\'${idE}\']').forEach(el=>el.checked=true);}upScoreCheck('${idE}','tab',this.checked)" ${locked?'disabled':''}> Tirs au but
         </label>
       </div>
       ${s.tab?`<div style="margin-top:4px;text-align:center">
@@ -746,10 +746,10 @@ function matchHTML(id,date,hLabel,aLabel){
       const canEdit=isMine;
       playerProlongTab=`<div style="display:flex;gap:6px;margin-top:4px">
         <label style="display:flex;align-items:center;gap:3px;font-size:10px;color:#888;cursor:${canEdit?'pointer':'default'}">
-          <input type="checkbox" ${pp.prolong?'checked':''} ${canEdit?`onchange="upPronoCheck('${idE}','${pnE}','prolong',this.checked)"`:''} ${!canEdit?'disabled':''}> ⏱️
+          <input type="checkbox" ${pp.prolong?'checked':''} ${canEdit?`onchange="if(!this.checked){upPronoCheck('${idE}','${pnE}','tab',false);document.querySelectorAll('[data-ptab=\'${idE}-${pnE}\']').forEach(el=>el.checked=false);}upPronoCheck('${idE}','${pnE}','prolong',this.checked)"`:''} ${!canEdit?'disabled':''}> ⏱️
         </label>
         <label style="display:flex;align-items:center;gap:3px;font-size:10px;color:#888;cursor:${canEdit?'pointer':'default'}">
-          <input type="checkbox" ${pp.tab?'checked':''} ${canEdit?`onchange="upPronoCheck('${idE}','${pnE}','tab',this.checked)"`:''} ${!canEdit?'disabled':''}> 🥅
+          <input type="checkbox" ${pp.tab?'checked':''} ${canEdit?`onchange="if(this.checked){upPronoCheck('${idE}','${pnE}','prolong',true);document.querySelectorAll('[data-pprolong=\'${idE}-${pnE}\']').forEach(el=>el.checked=true);}upPronoCheck('${idE}','${pnE}','tab',this.checked)"`:''} ${!canEdit?'disabled':''}> 🥅
         </label>
       </div>
       ${pp.tab?`<div style="margin-top:3px">
