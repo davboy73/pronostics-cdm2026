@@ -480,7 +480,7 @@ function calcPts(rh,ra,ph,pa,rProlong,rTab,pProlong,pTab){
   return null; // sera calculé dans calcPtsForMatch
 }
 
-function calcPtsForMatch(mid, rh, ra, ph, pa, rProlong, rTab, pProlong, pTab){
+function calcPtsForMatch(mid, rh, ra, ph, pa, rProlong, rTab, pProlong, pTab, rTabWinner, pTabWinner){
   if([rh,ra,ph,pa].some(x=>x===''||x===null||x===undefined)) return null;
   const v=[rh,ra,ph,pa].map(Number);
   if(v.some(isNaN)) return null;
@@ -490,7 +490,7 @@ function calcPtsForMatch(mid, rh, ra, ph, pa, rProlong, rTab, pProlong, pTab){
   if(v[0]===v[2]&&v[1]===v[3]) pts=bar.exact;
   else if(getRes(v[0],v[1])===getRes(v[2],v[3])) pts=bar.result;
   else return 0;
-  // Bonus/malus prolong/tab (phases éliminatoires uniquement)
+  // Bonus/malus prolong/tab + vainqueur TAB
   if(phase!=='group'){
     if(pProlong) pts+=(rProlong?1:-1);
     if(pTab) pts+=(rTab?1:-1);
@@ -504,7 +504,7 @@ function totalPts(player){
   for(const id of all){
     const s=scores[id]||{};
     const p=(pronos[id]||{})[player]||{};
-    const pts=calcPtsForMatch(id,s.h,s.a,p.h,p.a,s.prolong,s.tab,p.prolong,p.tab);
+    const pts=calcPtsForMatch(id,s.h,s.a,p.h,p.a,s.prolong,s.tab,p.prolong,p.tab,s.tabWinner,p.tabWinner);
     if(pts!==null) t+=pts;
   }
   return t;
@@ -712,7 +712,16 @@ function matchHTML(id,date,hLabel,aLabel){
         <label style="display:flex;align-items:center;gap:4px;font-size:11px;color:#888;cursor:pointer">
           <input type="checkbox" ${rTab?'checked':''} onchange="upScoreCheck('${idE}','tab',this.checked)" ${locked?'disabled':''}> Tirs au but
         </label>
-      </div>`:
+      </div>
+      ${s.tab?`<div style="margin-top:4px;text-align:center">
+        <span style="font-size:11px;color:#888">Vainqueur TAB : </span>
+        <select style="font-size:11px;border:1px solid #ddd;border-radius:5px;padding:2px 4px" onchange="upScoreStr('${idE}','tabWinner',this.value)" ${locked?'disabled':''}>
+          <option value="">-- choisir --</option>
+          <option value="${hLabel}" ${s.tabWinner===hLabel?'selected':''}>${hLabel}</option>
+          <option value="${aLabel}" ${s.tabWinner===aLabel?'selected':''}>${aLabel}</option>
+        </select>
+      </div>`:''}
+      `:
       (rProlong||rTab)?`<div style="text-align:center;font-size:11px;color:#888;margin-top:4px">${rProlong?'⏱️ Prolongations':''} ${rTab?'🥅 Tirs au but':''}</div>`:'';
     prolongTabHTML=adminProlongTab;
   }
@@ -723,7 +732,7 @@ function matchHTML(id,date,hLabel,aLabel){
 
   for(const pn of PLAYERS){
     const pp=(pronos[id]||{})[pn]||{};
-    const pts=calcPtsForMatch(id,rh,ra,pp.h??'',pp.a??'',s.prolong,s.tab,pp.prolong,pp.tab);
+    const pts=calcPtsForMatch(id,rh,ra,pp.h??'',pp.a??'',s.prolong,s.tab,pp.prolong,pp.tab,s.tabWinner,pp.tabWinner);
     const badge=pts===null?'':pts>=bar.exact?`<span class="pts pts-3">🎯${pts}</span>`:pts>0?`<span class="pts pts-1">✅${pts}</span>`:rh!==''?`<span class="pts pts-0">0❌</span>`:'';
     const isMine=currentPlayer===pn;
     const pnE=pn.replace(/'/g,"'");
@@ -742,7 +751,15 @@ function matchHTML(id,date,hLabel,aLabel){
         <label style="display:flex;align-items:center;gap:3px;font-size:10px;color:#888;cursor:${canEdit?'pointer':'default'}">
           <input type="checkbox" ${pp.tab?'checked':''} ${canEdit?`onchange="upPronoCheck('${idE}','${pnE}','tab',this.checked)"`:''} ${!canEdit?'disabled':''}> 🥅
         </label>
-      </div>`;
+      </div>
+      ${pp.tab?`<div style="margin-top:3px">
+        <select style="font-size:10px;width:100%;border:1px solid #ddd;border-radius:4px;padding:1px 3px" ${canEdit?`onchange="upPronoStr('${idE}','${pnE}','tabWinner',this.value)"`:''} ${!canEdit?'disabled':''}>
+          <option value="">Vainqueur ?</option>
+          <option value="${hLabel}" ${pp.tabWinner===hLabel?'selected':''}>${hLabel}</option>
+          <option value="${aLabel}" ${pp.tabWinner===aLabel?'selected':''}>${aLabel}</option>
+        </select>
+      </div>`:''}
+      `;
     } else if(isElim&&locked&&(pp.prolong||pp.tab)){
       playerProlongTab=`<div style="font-size:10px;color:#aaa;margin-top:2px">${pp.prolong?'⏱️':''} ${pp.tab?'🥅':''}</div>`;
     }
@@ -1020,6 +1037,22 @@ function renderMatches(){
   el.innerHTML=html;
 }
 
+
+window.upScoreStr=function(id,field,val){
+  if(currentPlayer!==ADMIN) return;
+  if(!scores[id]) scores[id]={};
+  scores[id][field]=val;
+  set(ref(db,`scores/${id}/${field}`),val);
+}
+
+window.upPronoStr=function(id,player,field,val){
+  if(currentPlayer!==player) return;
+  if(locks[id]) return;
+  if(!pronos[id]) pronos[id]={};
+  if(!pronos[id][player]) pronos[id][player]={};
+  pronos[id][player][field]=val;
+  set(ref(db,`pronos/${id}/${player}/${field}`),val);
+}
 
 window.upScoreCheck=function(id,field,val){
   if(currentPlayer!==ADMIN) return;
