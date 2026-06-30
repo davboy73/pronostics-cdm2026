@@ -480,8 +480,13 @@ function getWinner(m){
   const s=scores[m.id];
   if(!s||s.h===''||s.h===undefined||s.a===''||s.a===undefined) return null;
   const h=parseInt(s.h),a=parseInt(s.a);
-  if(isNaN(h)||isNaN(a)||h===a) return null;
+  if(isNaN(h)||isNaN(a)) return null;
   const[th,ta]=getElimTeams(m);
+  if(h===a){
+    // Match nul : le vainqueur est déterminé par les TAB
+    if(s.tabWinner) return s.tabWinner;
+    return null; // pas encore de vainqueur TAB renseigné
+  }
   return h>a?th:ta;
 }
 
@@ -490,8 +495,12 @@ function getLoser(m){
   const s=scores[m.id];
   if(!s||s.h===''||s.h===undefined||s.a===''||s.a===undefined) return null;
   const h=parseInt(s.h),a=parseInt(s.a);
-  if(isNaN(h)||isNaN(a)||h===a) return null;
+  if(isNaN(h)||isNaN(a)) return null;
   const[th,ta]=getElimTeams(m);
+  if(h===a){
+    if(s.tabWinner) return s.tabWinner===th?ta:th;
+    return null;
+  }
   return h>a?ta:th;
 }
 
