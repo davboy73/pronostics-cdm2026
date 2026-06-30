@@ -834,7 +834,7 @@ function matchHTML(id,date,hLabel,aLabel){
       </div>`:''}
       `;
     } else if(isElim&&locked&&(pp.prolong||pp.tab)){
-      playerProlongTab=`<div style="font-size:10px;color:#aaa;margin-top:2px">${pp.prolong?'⏱️':''} ${pp.tab?'🥅':''}</div>`;
+      playerProlongTab=`<div style="font-size:10px;color:#aaa;margin-top:2px">${pp.prolong?'⏱️':''} ${pp.tab?'🥅'+(pp.tabWinner?` ${pp.tabWinner}`:''):''}</div>`;
     }
 
     phtml+=`<div class="prono-cell${isMine?' mine':''}" data-id="${id}" data-player="${pn}">
@@ -953,19 +953,28 @@ function renderToday(){
   const monthsFull=['','janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
   const tomorrowLabel=`${tomorrow.getDate()} ${monthsFull[tomorrow.getMonth()+1]}`;
 
-  const todayMatches=GROUP_MATCHES.filter(m=>m.d===todayLabel);
-  const tomorrowMatches=GROUP_MATCHES.filter(m=>m.d===tomorrowLabel);
+  // Inclure phase de groupes ET phases éliminatoires
+  const ALL_DATED_MATCHES = [
+    ...GROUP_MATCHES,
+    ...ELIM.map(m=>{
+      const [th,ta]=getElimTeams(m);
+      return {id:m.id, d:m.d, h:th||'À déterminer', a:ta||'À déterminer', g:null};
+    })
+  ];
+
+  const todayMatches=ALL_DATED_MATCHES.filter(m=>m.d===todayLabel);
+  const tomorrowMatches=ALL_DATED_MATCHES.filter(m=>m.d===tomorrowLabel);
 
   let html='';
 
   if(todayMatches.length===0){
     // Trouver prochaine journée
-    const allDates=[...new Set(GROUP_MATCHES.map(m=>m.d))];
+    const allDates=[...new Set(ALL_DATED_MATCHES.map(m=>m.d))];
     const todayVal=parseDate(todayLabel);
     const nextDates=allDates.filter(d=>parseDate(d)>todayVal).sort((a,b)=>parseDate(a)-parseDate(b));
     const nextDate=nextDates[0];
     if(!nextDate){ el.innerHTML=''; return; }
-    const nextMatches=GROUP_MATCHES.filter(m=>m.d===nextDate);
+    const nextMatches=ALL_DATED_MATCHES.filter(m=>m.d===nextDate);
     html+=`<div style="background:#fff;border-radius:10px;padding:12px 14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.07)">
       <div style="font-size:11px;font-weight:700;color:#e67e22;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">⏭️ Prochains matchs — ${nextDate}</div>
       ${nextMatches.map(m=>simpleMatchLine(m)).join('')}
