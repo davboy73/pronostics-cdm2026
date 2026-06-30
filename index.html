@@ -535,21 +535,20 @@ function calcPtsForMatch(mid, rh, ra, ph, pa, rProlong, rTab, pProlong, pTab, rT
   const phase=getPhase(mid);
   const bar=BAREME[phase]||BAREME.group;
   let pts=0;
+  let isExact=false;
 
   if(rTab && rTabWinner){
-    // Match aux TAB : score exact = bon score + bon vainqueur TAB
     if(v[0]===v[2] && v[1]===v[3] && pTabWinner===rTabWinner){
-      pts=bar.exact; // score exact ET bon vainqueur
+      pts=bar.exact; isExact=true;
     } else if(v[0]===v[2] && v[1]===v[3]){
-      pts=bar.result; // bon score mais mauvais vainqueur TAB
+      pts=bar.result;
     } else if(pTabWinner===rTabWinner){
-      pts=bar.result; // bon vainqueur TAB mais mauvais score
+      pts=bar.result;
     } else {
-      pts=0; // tout faux
+      pts=0;
     }
   } else {
-    // Match sans TAB : calcul normal
-    if(v[0]===v[2]&&v[1]===v[3]) pts=bar.exact;
+    if(v[0]===v[2]&&v[1]===v[3]){ pts=bar.exact; isExact=true; }
     else if(getRes(v[0],v[1])===getRes(v[2],v[3])) pts=bar.result;
     else pts=0;
   }
@@ -560,6 +559,15 @@ function calcPtsForMatch(mid, rh, ra, ph, pa, rProlong, rTab, pProlong, pTab, rT
     if(pTab) pts+=(rTab?1:-1);
   }
   return pts;
+}
+
+function isExactScore(mid, rh, ra, ph, pa, rTab, rTabWinner, pTabWinner){
+  if([rh,ra,ph,pa].some(x=>x===''||x===null||x===undefined)) return false;
+  const v=[rh,ra,ph,pa].map(Number);
+  if(v.some(isNaN)) return false;
+  const scoreMatch = v[0]===v[2] && v[1]===v[3];
+  if(rTab && rTabWinner) return scoreMatch && pTabWinner===rTabWinner;
+  return scoreMatch;
 }
 
 function totalPts(player){
@@ -786,7 +794,7 @@ function matchHTML(id,date,hLabel,aLabel){
         </select>
       </div>`:''}
       `:
-      (rProlong||rTab)?`<div style="text-align:center;font-size:11px;color:#888;margin-top:4px">${rProlong?'⏱️ Prolongations':''} ${rTab?'🥅 Tirs au but':''}</div>`:'';
+      (rProlong||rTab)?`<div style="text-align:center;font-size:11px;color:#888;margin-top:4px">${rProlong?'⏱️ Prolongations':''} ${rTab?'🥅 Tirs au but'+(s.tabWinner?` — <strong style="color:#0d6e3b">${s.tabWinner}</strong> vainqueur`:''):''}</div>`:'';
     prolongTabHTML=adminProlongTab;
   }
 
@@ -797,7 +805,8 @@ function matchHTML(id,date,hLabel,aLabel){
   for(const pn of PLAYERS){
     const pp=(pronos[id]||{})[pn]||{};
     const pts=calcPtsForMatch(id,rh,ra,pp.h??'',pp.a??'',s.prolong,s.tab,pp.prolong,pp.tab,s.tabWinner,pp.tabWinner);
-    const badge=pts===null?'':pts>=bar.exact?`<span class="pts pts-3">🎯${pts}</span>`:pts>0?`<span class="pts pts-1">✅${pts}</span>`:rh!==''?`<span class="pts pts-0">0❌</span>`:'';
+    const exact=isExactScore(id,rh,ra,pp.h??'',pp.a??'',s.tab,s.tabWinner,pp.tabWinner);
+    const badge=pts===null?'':exact?`<span class="pts pts-3">🎯${pts}</span>`:pts>0?`<span class="pts pts-1">✅${pts}</span>`:rh!==''?`<span class="pts pts-0">${pts}❌</span>`:'';
     const isMine=currentPlayer===pn;
     const pnE=pn.replace(/'/g,"'");
     const dis=(locked||!isMine)?'disabled':'';
