@@ -1313,10 +1313,38 @@ function showPlayerDetail(player){
   const el=document.getElementById('detail-content');
   if(!el) return;
 
-  let html='';
   let runningTotal=0;
+  let html='';
+
+  function rowHTML(label, prono, pts, lines){
+    const cls=pts>0?'dp-pos':pts<0?'dp-neg':'dp-zero';
+    const detailLines=lines.map(l=>`<div style="font-size:10px;color:#999;padding-left:8px">• ${l.label} : ${l.val>0?'+':''}${l.val}</div>`).join('');
+    return `<div class="detail-row" style="flex-direction:column;align-items:stretch">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div class="detail-match">${label} <span class="vs">(pronostic: ${prono})</span></div>
+        <div class="detail-pts ${cls}">${pts>0?'+':''}${pts}</div>
+      </div>
+      ${detailLines}
+    </div>`;
+  }
+
+  function accordionSection(key, title, rows, subtotal){
+    if(!rows.length) return '';
+    const subCls=subtotal>0?'dp-pos':subtotal<0?'dp-neg':'dp-zero';
+    return `<div class="group-header" onclick="toggleDetailGroup('${key}')" style="margin-top:8px">
+      <span>${title} <span style="font-weight:400;opacity:.7;font-size:10px">(${rows.length} matchs)</span></span>
+      <span style="display:flex;align-items:center;gap:6px">
+        <span class="detail-pts ${subCls}" style="font-size:11px">${subtotal>0?'+':''}${subtotal} pts</span>
+        <span id="dga-${key}" class="group-arrow">▼</span>
+      </span>
+    </div>
+    <div class="group-body" id="dgb-${key}"><div class="group-body-inner">
+      ${rows.join('')}
+    </div></div>`;
+  }
 
   // Phase de groupes
+  let groupTotal=0;
   const groupRows=[];
   for(const m of GROUP_MATCHES){
     const s=scores[m.id]||{};
@@ -1324,59 +1352,46 @@ function showPlayerDetail(player){
     const p=(pronos[m.id]||{})[player]||{};
     const det=detailCalc(m.id,s.h,s.a,p.h??'',p.a??'',null,null,null,null,null,null);
     if(det===null) continue;
-    runningTotal+=det.pts;
-    groupRows.push({label:`${m.h} ${s.h}-${s.a} ${m.a}`,prono:(p.h!==undefined&&p.h!=='')?`${p.h}-${p.a}`:'—',pts:det.pts,lines:det.lines});
+    groupTotal+=det.pts; runningTotal+=det.pts;
+    groupRows.push(rowHTML(`${m.h} ${s.h}-${s.a} ${m.a}`,(p.h!==undefined&&p.h!=='')?`${p.h}-${p.a}`:'—',det.pts,det.lines));
   }
-  if(groupRows.length){
-    html+=`<div class="detail-section-label">⚽ Phase de groupes</div>`;
-    groupRows.forEach(r=>{
-      const cls=r.pts>0?'dp-pos':r.pts<0?'dp-neg':'dp-zero';
-      const detailLines=r.lines.map(l=>`<div style="font-size:10px;color:#999;padding-left:8px">• ${l.label} : ${l.val>0?'+':''}${l.val}</div>`).join('');
-      html+=`<div class="detail-row" style="flex-direction:column;align-items:stretch">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div class="detail-match">${r.label} <span class="vs">(pronostic: ${r.prono})</span></div>
-          <div class="detail-pts ${cls}">${r.pts>0?'+':''}${r.pts}</div>
-        </div>
-        ${detailLines}
-      </div>`;
-    });
+  html+=accordionSection('groupes','⚽ Phase de groupes',groupRows,groupTotal);
+
+  // Phases éliminatoires détaillées par sous-phase
+  const ELIM_PHASES=[
+    {key:'r16',label:'16es de finale',ids:ELIM.filter(m=>m.type==='r16').map(m=>m.id)},
+    {key:'q',label:'8es de finale',ids:['q01','q02','q03','q04','q05','q06','q07','q08']},
+    {key:'qf',label:'Quarts de finale',ids:['qf1','qf2','qf3','qf4']},
+    {key:'sf',label:'Demi-finales',ids:['sf1','sf2']},
+    {key:'p3',label:'Petite finale',ids:['p3']},
+    {key:'fin',label:'Finale',ids:['fin']},
+  ];
+
+  for(const ph of ELIM_PHASES){
+    let phaseTotal=0;
+    const phaseRows=[];
+    for(const id of ph.ids){
+      const m=ELIM.find(x=>x.id===id);
+      if(!m) continue;
+      const s=scores[id]||{};
+      if(s.h===''||s.h===undefined) continue;
+      const p=(pronos[id]||{})[player]||{};
+      const [th,ta]=getElimTeams(m);
+      const det=detailCalc(id,s.h,s.a,p.h??'',p.a??'',s.prolong,s.tab,p.prolong,p.tab,s.tabWinner,p.tabWinner);
+      if(det===null) continue;
+      phaseTotal+=det.pts; runningTotal+=det.pts;
+      const extra=[];
+      if(s.tab) extra.push(`TAB: ${s.tabWinner||'?'}`);
+      phaseRows.push(rowHTML(
+        `${th||'?'} ${s.h}-${s.a} ${ta||'?'}${extra.length?' ('+extra.join(', ')+')':''}`,
+        (p.h!==undefined&&p.h!=='')?`${p.h}-${p.a}${p.tab?' TAB:'+(p.tabWinner||'?'):''}`:'—',
+        det.pts, det.lines
+      ));
+    }
+    html+=accordionSection(ph.key, ph.label, phaseRows, phaseTotal);
   }
 
-  // Phases éliminatoires
-  const elimRows=[];
-  for(const m of ELIM){
-    const s=scores[m.id]||{};
-    if(s.h===''||s.h===undefined) continue;
-    const p=(pronos[m.id]||{})[player]||{};
-    const [th,ta]=getElimTeams(m);
-    const det=detailCalc(m.id,s.h,s.a,p.h??'',p.a??'',s.prolong,s.tab,p.prolong,p.tab,s.tabWinner,p.tabWinner);
-    if(det===null) continue;
-    runningTotal+=det.pts;
-    const extra=[];
-    if(s.tab) extra.push(`TAB: ${s.tabWinner||'?'}`);
-    elimRows.push({
-      label:`${th||'?'} ${s.h}-${s.a} ${ta||'?'}${extra.length?' ('+extra.join(', ')+')':''}`,
-      prono:(p.h!==undefined&&p.h!=='')?`${p.h}-${p.a}${p.tab?' TAB:'+( p.tabWinner||'?'):''}`:'—',
-      pts:det.pts,
-      lines:det.lines
-    });
-  }
-  if(elimRows.length){
-    html+=`<div class="detail-section-label">🏆 Phases éliminatoires</div>`;
-    elimRows.forEach(r=>{
-      const cls=r.pts>0?'dp-pos':r.pts<0?'dp-neg':'dp-zero';
-      const detailLines=r.lines.map(l=>`<div style="font-size:10px;color:#999;padding-left:8px">• ${l.label} : ${l.val>0?'+':''}${l.val}</div>`).join('');
-      html+=`<div class="detail-row" style="flex-direction:column;align-items:stretch">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div class="detail-match">${r.label} <span class="vs">(pronostic: ${r.prono})</span></div>
-          <div class="detail-pts ${cls}">${r.pts>0?'+':''}${r.pts}</div>
-        </div>
-        ${detailLines}
-      </div>`;
-    });
-  }
-
-  if(!groupRows.length && !elimRows.length){
+  if(!html){
     html='<div style="text-align:center;color:#aaa;padding:20px;font-size:13px">Aucun match joué pour l\'instant</div>';
   } else {
     html+=`<div style="text-align:center;margin-top:10px;padding:10px;background:#f0faf4;border-radius:8px;font-size:14px;font-weight:700;color:#0d6e3b">Total : ${runningTotal} points</div>`;
@@ -1384,7 +1399,22 @@ function showPlayerDetail(player){
 
   el.innerHTML=html;
 }
+
+function toggleDetailGroup(key){
+  const body=document.getElementById('dgb-'+key);
+  const arrow=document.getElementById('dga-'+key);
+  if(!body) return;
+  const isOpen=body.classList.contains('open');
+  document.querySelectorAll('#detail-content .group-body.open').forEach(el=>el.classList.remove('open'));
+  document.querySelectorAll('#detail-content .group-arrow.open').forEach(el=>el.classList.remove('open'));
+  if(!isOpen){
+    body.classList.add('open');
+    if(arrow) arrow.classList.add('open');
+  }
+}
+window.toggleDetailGroup=toggleDetailGroup;
 window.showPlayerDetail=showPlayerDetail;
+
 
 // ─── INIT ──────────────────────────────────────────────────────────────────
 try {
